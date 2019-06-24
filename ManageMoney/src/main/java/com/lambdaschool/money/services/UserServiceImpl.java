@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,14 @@ public class UserServiceImpl implements UserDetailsService, UserService
         return list;
     }
 
+    public User findUserByName(String username) {
+        User user = userrepos.findByUsername(username);
+        if (user == null) {
+            throw new EntityNotFoundException("User could not be found");
+        }
+        return user;
+    }
+
     @Override
     public void delete(long id)
     {
@@ -77,6 +86,22 @@ public class UserServiceImpl implements UserDetailsService, UserService
             newRoles.add(new UserRoles(newUser, ur.getRole()));
         }
         newUser.setUserRoles(newRoles);
+
+        if (user.getAge() > 0) {
+            newUser.setAge(user.getAge());
+        }
+
+        if (user.getLocation() != null && user.getLocation().length() > 0) {
+            newUser.setLocation(user.getLocation());
+        }
+
+        if (user.getEducation() != null && user.getEducation().length() > 0) {
+            newUser.setEducation(user.getEducation());
+        }
+
+        if (user.getIncome() != null && user.getIncome().length() > 0) {
+            newUser.setIncome(user.getIncome());
+        }
 
         return userrepos.save(newUser);
     }
@@ -115,6 +140,22 @@ public class UserServiceImpl implements UserDetailsService, UserService
                     {
                         rolerepos.insertUserRoles(id, ur.getRole().getRoleid());
                     }
+                }
+
+                if (user.getAge() > 0) {
+                    currentUser.setAge(user.getAge());
+                }
+
+                if (user.getLocation() != null && user.getLocation().length() > 0) {
+                    currentUser.setLocation(user.getLocation());
+                }
+
+                if (user.getEducation() != null && user.getEducation().length() > 0) {
+                    currentUser.setEducation(user.getEducation());
+                }
+
+                if (user.getIncome() != null && user.getIncome().length() > 0) {
+                    currentUser.setIncome(user.getIncome());
                 }
 
                 return userrepos.save(currentUser);

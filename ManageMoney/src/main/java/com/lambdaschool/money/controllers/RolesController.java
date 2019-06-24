@@ -66,11 +66,6 @@ public class RolesController
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
-
-//    @PostMapping(value = "/user/{userid}/role/{roleid}")
-
-
-
     @DeleteMapping("/role/{id}")
     public ResponseEntity<?> deleteRoleById(HttpServletRequest request,
                                             @PathVariable

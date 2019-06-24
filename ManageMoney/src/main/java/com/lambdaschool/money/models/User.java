@@ -32,13 +32,13 @@ public class User extends Auditable
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
+    private String location;
+
     private int age;
 
     private String income;
 
     private String education;
-
-    private String location;
 
     public User()
     {
@@ -107,6 +107,30 @@ public class User extends Auditable
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getIncome() {
+        return income;
+    }
+
+    public void setIncome(String income) {
+        this.income = income;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
     }
 
     public List<SimpleGrantedAuthority> getAuthority()

@@ -37,26 +37,32 @@ public class SeedData implements CommandLineRunner
         admins.add(new UserRoles(new User(), r1));
         admins.add(new UserRoles(new User(), r2));
         User u1 = new User("admin", "password", admins);
+        u1.setAge(36);
+        u1.setEducation("Master's");
+        u1.setIncome("50k-100k");
+        u1.setLocation("Boston");
 
         userService.save(u1);
 
-        // user
+        //users
         ArrayList<UserRoles> users = new ArrayList<>();
         users.add(new UserRoles(new User(), r2));
-        User u3 = new User("barnbarn", "ILuvM4th!", users);
-
-        userService.save(u3);
-
-
-        //profile-less users
-        users = new ArrayList<>();
-        users.add(new UserRoles(new User(), r2));
         User u4 = new User("Bob", "password", users);
+        u4.setAge(24);
+        u4.setEducation("Associate's");
+        u4.setIncome("25k-50k");
+        u4.setLocation("Austin");
+
         userService.save(u4);
 
         users = new ArrayList<>();
         users.add(new UserRoles(new User(), r2));
         User u5 = new User("Jane", "password", users);
         userService.save(u5);
+
+        u1.setAge(78);
+        u1.setEducation("High School");
+        u1.setIncome("1k-2k");
+        u1.setLocation("New York");
     }
 }

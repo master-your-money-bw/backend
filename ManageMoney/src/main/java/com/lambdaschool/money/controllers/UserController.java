@@ -39,6 +39,26 @@ public class UserController
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/currentuser",
+                produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+        User u = userService.findUserByName(authentication.getName());
+        return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/currentuser")
+    public ResponseEntity<?> updateUser(Authentication authentication,
+                                        HttpServletRequest request,
+                                        @RequestBody
+                                                User updateUser)
+    {
+        logger.trace(request.getRequestURI() + " accessed");
+
+        User u = userService.findUserByName(authentication.getName());
+        userService.update(updateUser, u.getUserid());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/{userId}",
@@ -83,20 +103,6 @@ public class UserController
         responseHeaders.setLocation(newUserURI);
 
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
-    }
-
-
-    @PutMapping(value = "/user/{id}")
-    public ResponseEntity<?> updateUser(HttpServletRequest request,
-                                        @RequestBody
-                                                User updateUser,
-                                        @PathVariable
-                                                long id)
-    {
-        logger.trace(request.getRequestURI() + " accessed");
-
-        userService.update(updateUser, id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
