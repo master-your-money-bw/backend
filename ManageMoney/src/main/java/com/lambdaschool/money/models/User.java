@@ -32,6 +32,12 @@ public class User extends Auditable
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
+    private int age;
+
+    private String income;
+
+    private String education;
+
     private String location;
 
     public User()
