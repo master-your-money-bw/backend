@@ -32,10 +32,7 @@ public class User extends Auditable
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY,
-              cascade =  CascadeType.ALL)
-    @JoinColumn(name = "profileid")
-    private Profile profile = null;
+    private String location;
 
     public User()
     {
@@ -98,12 +95,12 @@ public class User extends Auditable
         this.userRoles = userRoles;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public String getLocation() {
+        return location;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public List<SimpleGrantedAuthority> getAuthority()

@@ -1,7 +1,6 @@
 package com.lambdaschool.money.services;
 
 import com.lambdaschool.money.exceptions.ResourceNotFoundException;
-import com.lambdaschool.money.models.Profile;
 import com.lambdaschool.money.models.User;
 import com.lambdaschool.money.models.UserRoles;
 import com.lambdaschool.money.repository.RoleRepository;
@@ -79,10 +78,6 @@ public class UserServiceImpl implements UserDetailsService, UserService
         }
         newUser.setUserRoles(newRoles);
 
-        if (user.getProfile() != null) {
-            newUser.setProfile(user.getProfile());
-        }
-
         return userrepos.save(newUser);
     }
 
@@ -120,10 +115,6 @@ public class UserServiceImpl implements UserDetailsService, UserService
                     {
                         rolerepos.insertUserRoles(id, ur.getRole().getRoleid());
                     }
-                }
-
-                if (user.getProfile() != null) {
-                    currentUser.setProfile(user.getProfile());
                 }
 
                 return userrepos.save(currentUser);
