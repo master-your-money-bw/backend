@@ -20,7 +20,16 @@ public class Swagger2Config
     {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select().apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any()).build()
+                .paths(input ->
+                        !PathSelectors.regex("/oauth/confirm_access.*").apply(input) &&
+                                !PathSelectors.regex("/oauth/authorize.*").apply(input) &&
+                                !PathSelectors.regex("/oauth/check_token.*").apply(input) &&
+                                !PathSelectors.regex("/oauthconfirm_acccess.*").apply(input) &&
+                                !PathSelectors.regex("/oauth/error.*").apply(input) &&
+                                !PathSelectors.regex("/actuator.*").apply(input) &&
+                                !PathSelectors.regex("/error.*").apply(input) &&
+                                PathSelectors.any().apply(input))
+                .build()
                 .useDefaultResponseMessages(false) // Allows only my exception responses
                 .ignoredParameterTypes(Pageable.class) // allows only my paging parameter list
                 .apiInfo(apiEndPointsInfo());
@@ -28,6 +37,6 @@ public class Swagger2Config
 
     private ApiInfo apiEndPointsInfo()
     {
-        return new ApiInfoBuilder().title("Java String Back End Starting Project").description("A starting application for developing Java Spring Back End Projects").contact(new Contact("John Mitchell", "http://www.lambdaschool.com", "john@lambdaschool.com")).license("MIT").licenseUrl("https://github.com/LambdaSchool/java-starthere/blob/master/LICENSE").version("1.0.0").build();
+        return new ApiInfoBuilder().title("BW Money API").description("API for BW Money Build Weeks Project").contact(new Contact("Bobby Driskell", "", "")).license("MIT").licenseUrl("https://github.com/LambdaSchool/java-starthere/blob/master/LICENSE").version("1.0.0").build();
     }
 }

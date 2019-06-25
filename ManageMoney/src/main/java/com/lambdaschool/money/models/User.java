@@ -1,5 +1,6 @@
 package com.lambdaschool.money.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,7 +31,13 @@ public class User extends Auditable
     @OneToMany(mappedBy = "user",
                cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
+    @JsonIgnore
     private List<UserRoles> userRoles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",
+               cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<Expense> userExpenses = new ArrayList<>();
 
     private String location;
 
@@ -86,6 +93,7 @@ public class User extends Auditable
         this.password = passwordEncoder.encode(password);
     }
 
+    @JsonIgnore
     public void setPasswordNoEncrypt(String password)
     {
         this.password = password;
@@ -133,6 +141,15 @@ public class User extends Auditable
         this.education = education;
     }
 
+    public List<Expense> getUserExpenses() {
+        return userExpenses;
+    }
+
+    public void setUserExpenses(List<Expense> userExpenses) {
+        this.userExpenses = userExpenses;
+    }
+
+    @JsonIgnore
     public List<SimpleGrantedAuthority> getAuthority()
     {
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();

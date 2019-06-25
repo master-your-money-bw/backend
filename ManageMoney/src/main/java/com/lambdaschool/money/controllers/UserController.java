@@ -2,6 +2,7 @@ package com.lambdaschool.money.controllers;
 
 import com.lambdaschool.money.models.User;
 import com.lambdaschool.money.services.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +30,7 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "Return all users, ADMIN ONLY", response = User.class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users",
                 produces = {"application/json"})
@@ -39,6 +42,7 @@ public class UserController
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Return current user", response = User.class)
     @GetMapping(value = "/currentuser",
                 produces = {"application/json"})
     @ResponseBody
@@ -47,6 +51,7 @@ public class UserController
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Updates current user", response = User.class)
     @PutMapping(value = "/currentuser")
     public ResponseEntity<?> updateUser(Authentication authentication,
                                         HttpServletRequest request,
@@ -56,10 +61,11 @@ public class UserController
         logger.trace(request.getRequestURI() + " accessed");
 
         User u = userService.findUserByName(authentication.getName());
-        userService.update(updateUser, u.getUserid());
-        return new ResponseEntity<>(HttpStatus.OK);
+        User rtnUser = userService.update(updateUser, u.getUserid());
+        return new ResponseEntity<>(rtnUser, HttpStatus.OK);
     }
 
+    @ApiIgnore
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/{userId}",
                 produces = {"application/json"})
@@ -73,7 +79,7 @@ public class UserController
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
-
+    @ApiIgnore
     @GetMapping(value = "/getusername",
                 produces = {"application/json"})
     @ResponseBody
@@ -84,7 +90,7 @@ public class UserController
         return new ResponseEntity<>(authentication.getPrincipal(), HttpStatus.OK);
     }
 
-
+    @ApiIgnore
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(value = "/user",
                  consumes = {"application/json"},
@@ -105,7 +111,7 @@ public class UserController
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
-
+    @ApiIgnore
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deleteUserById(HttpServletRequest request,

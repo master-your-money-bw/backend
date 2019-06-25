@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/roles")
+@ApiIgnore
 public class RolesController
 {
     private static final Logger logger = LoggerFactory.getLogger(RolesController.class);
