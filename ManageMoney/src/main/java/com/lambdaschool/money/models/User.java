@@ -37,15 +37,26 @@ public class User extends Auditable
     @OneToMany(mappedBy = "user",
                cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
+    @JsonIgnore
     private List<Expense> userExpenses = new ArrayList<>();
 
     private String location;
 
     private int age;
 
-    private String income;
+    private int income;
 
     private String education;
+
+    private int transportation;
+
+    private int food;
+
+    private int clothing;
+
+    private int bills;
+
+    private int housing;
 
     public User()
     {
@@ -125,14 +136,6 @@ public class User extends Auditable
         this.age = age;
     }
 
-    public String getIncome() {
-        return income;
-    }
-
-    public void setIncome(String income) {
-        this.income = income;
-    }
-
     public String getEducation() {
         return education;
     }
@@ -147,6 +150,54 @@ public class User extends Auditable
 
     public void setUserExpenses(List<Expense> userExpenses) {
         this.userExpenses = userExpenses;
+    }
+
+    public int getIncome() {
+        return income;
+    }
+
+    public void setIncome(int income) {
+        this.income = income;
+    }
+
+    public int getTransportation() {
+        return transportation;
+    }
+
+    public void setTransportation(int transportation) {
+        this.transportation = transportation;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public void setFood(int food) {
+        this.food = food;
+    }
+
+    public int getClothing() {
+        return clothing;
+    }
+
+    public void setClothing(int clothing) {
+        this.clothing = clothing;
+    }
+
+    public int getBills() {
+        return bills;
+    }
+
+    public void setBills(int bills) {
+        this.bills = bills;
+    }
+
+    public int getHousing() {
+        return housing;
+    }
+
+    public void setHousing(int housing) {
+        this.housing = housing;
     }
 
     @JsonIgnore

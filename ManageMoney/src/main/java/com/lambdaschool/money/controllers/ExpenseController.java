@@ -4,10 +4,12 @@ import com.lambdaschool.money.models.Expense;
 import com.lambdaschool.money.models.User;
 import com.lambdaschool.money.services.ExpenseService;
 import com.lambdaschool.money.services.UserService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +35,20 @@ public class ExpenseController {
     private UserService userService;
 
     @ApiOperation(value = "Return all current user's expenses", response = Expense.class, responseContainer = "List")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                                                 value = "Results page you want to retrieve (0..N)"),
+                               @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                                                 value = "Number of records per page."),
+                               @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                                                 value = "Sorting criteria in the format: property(,asc|desc). " +
+                                                         "Default sort order is ascending. " +
+                                                         "Multiple sort criteria are supported.")})
     @GetMapping(value = "/all", produces = {"application/json"})
-    public ResponseEntity<?> getMyExpenses(Authentication authentication) {
+    public ResponseEntity<?> getMyExpenses(Authentication authentication,
+                                           @PageableDefault(page = 0, size = 100)Pageable pageable) {
         User u = userService.findUserByName(authentication.getName());
-        List<Expense> list = expenseService.findAllByUserid(u.getUserid());
+        List<Expense> list = expenseService.findAllByUserid(u.getUserid(), pageable);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -75,6 +87,23 @@ public class ExpenseController {
         if (currentExpense.getUser() == u){
             expenseService.update(expense, id);
             return new ResponseEntity<>(currentExpense, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ApiOperation(value = "Updates expense by ID, returns updated expense", response = void.class)
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> deleteExpenseById(
+            @PathVariable
+            long id,
+            Authentication authentication
+    ) {
+        User u = userService.findUserByName(authentication.getName());
+        Expense e = expenseService.findExpenseById(id);
+        if (e.getUser() == u) {
+            expenseService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

@@ -6,6 +6,7 @@ import com.lambdaschool.money.models.User;
 import com.lambdaschool.money.repository.ExpenseRepository;
 import com.lambdaschool.money.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,10 +22,10 @@ public class ExpenseServiceImpl implements ExpenseService{
     UserRepository userRepository;
 
     @Override
-    public List<Expense> findAllByUserid(long id) throws ResourceNotFoundException {
+    public List<Expense> findAllByUserid(long id, Pageable pageable) throws ResourceNotFoundException {
         List<Expense> list = new ArrayList<>();
         User u = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
-        expenseRepository.findAllByUser(u).iterator().forEachRemaining(list::add);
+        expenseRepository.findAllByUser(u, pageable).iterator().forEachRemaining(list::add);
         return list;
     }
 

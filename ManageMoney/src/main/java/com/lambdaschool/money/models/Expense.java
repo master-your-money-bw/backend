@@ -1,5 +1,6 @@
 package com.lambdaschool.money.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Expense
     @ManyToOne
     @JoinColumn(name = "userid")
     @JsonIgnoreProperties("userExpenses")
+    @JsonIgnore
     private User user;
 
     public Expense() {

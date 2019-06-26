@@ -1,67 +1,61 @@
 package com.lambdaschool.money.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lambdaschool.money.models.Dog;
-import com.lambdaschool.money.models.User;
 import io.swagger.annotations.ApiOperation;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/passthrough")
 public class PassthroughController {
-    @ApiOperation(value = "TEST FOR RETURNING SOME DATA VIA ANOTHER API, WILL BE DELETED, DON'T WORRY ABOUT IT", response = Dog.class, responseContainer = "List")
-    @GetMapping(value = "/dogs")
-    public ResponseEntity<?> getAllDogs()
-    {
+    @ApiOperation(value = "Takes JSON, sends it to the Data API, returns the response.")
+    @PostMapping(value = "/data",
+            consumes = {"application/json"},
+                produces = {"application/json"})
+    public ResponseEntity<?> getData(@RequestBody String request) throws IOException {
+        //Change the URL with any other publicly accessible POST resource, which accepts JSON request body
+        URL url = new URL ("https://masteryourmoney.herokuapp.com/api");
 
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
+        con.setRequestMethod("POST");
 
-        try
-        {
-            URL restAPIUrl = new URL("https://bobbyad-java-dogs.herokuapp.com/dogs/dogs/dogs");
-            connection = (HttpURLConnection) restAPIUrl.openConnection();
-            connection.setRequestMethod("GET");
+        con.setRequestProperty("Content-Type", "application/json; utf-8");
+        con.setRequestProperty("Accept", "application/json");
 
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder jsonData = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                jsonData.append(line);
+        con.setDoOutput(true);
+
+        //JSON String need to be constructed for the specific resource.
+        //We may construct complex JSON using any third-party JSON libraries such as jackson or org.json
+        String jsonInputString = request;
+
+        try(OutputStream os = con.getOutputStream()){
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int code = con.getResponseCode();
+        System.out.println(code);
+
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))){
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
             }
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            ArrayList<Dog> dogList =
-                    objectMapper.readValue(jsonData.toString(), new TypeReference<ArrayList<Dog>>(){});
-
-            return new ResponseEntity<>(dogList, HttpStatus.OK);
-
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+        finally {
+            con.disconnect();
         }
-        finally
-        {
-            IOUtils.closeQuietly(reader);
-        }
-
-        return null;
     }
 }

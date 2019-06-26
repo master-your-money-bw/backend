@@ -99,7 +99,27 @@ public class UserServiceImpl implements UserDetailsService, UserService
             newUser.setEducation(user.getEducation());
         }
 
-        if (user.getIncome() != null && user.getIncome().length() > 0) {
+        if (user.getIncome() > 0) {
+            newUser.setIncome(user.getIncome());
+        }
+
+        if (user.getTransportation() > 0) {
+            newUser.setIncome(user.getIncome());
+        }
+
+        if (user.getFood() > 0) {
+            newUser.setIncome(user.getIncome());
+        }
+
+        if (user.getClothing() > 0) {
+            newUser.setIncome(user.getIncome());
+        }
+
+        if (user.getBills() > 0) {
+            newUser.setIncome(user.getIncome());
+        }
+
+        if (user.getHousing() > 0) {
             newUser.setIncome(user.getIncome());
         }
 
@@ -154,7 +174,27 @@ public class UserServiceImpl implements UserDetailsService, UserService
                     currentUser.setEducation(user.getEducation());
                 }
 
-                if (user.getIncome() != null && user.getIncome().length() > 0) {
+                if (user.getIncome() > 0) {
+                    currentUser.setIncome(user.getIncome());
+                }
+
+                if (user.getTransportation() > 0) {
+                    currentUser.setIncome(user.getIncome());
+                }
+
+                if (user.getFood() > 0) {
+                    currentUser.setIncome(user.getIncome());
+                }
+
+                if (user.getClothing() > 0) {
+                    currentUser.setIncome(user.getIncome());
+                }
+
+                if (user.getBills() > 0) {
+                    currentUser.setIncome(user.getIncome());
+                }
+
+                if (user.getHousing() > 0) {
                     currentUser.setIncome(user.getIncome());
                 }
 
