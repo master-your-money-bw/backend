@@ -104,23 +104,23 @@ public class UserServiceImpl implements UserDetailsService, UserService
         }
 
         if (user.getTransportation() > 0) {
-            newUser.setIncome(user.getIncome());
+            newUser.setTransportation(user.getTransportation());
         }
 
         if (user.getFood() > 0) {
-            newUser.setIncome(user.getIncome());
+            newUser.setFood(user.getFood());
         }
 
         if (user.getClothing() > 0) {
-            newUser.setIncome(user.getIncome());
+            newUser.setClothing(user.getClothing());
         }
 
         if (user.getBills() > 0) {
-            newUser.setIncome(user.getIncome());
+            newUser.setBills(user.getBills());
         }
 
         if (user.getHousing() > 0) {
-            newUser.setIncome(user.getIncome());
+            newUser.setHousing(user.getHousing());
         }
 
         return userrepos.save(newUser);
@@ -179,23 +179,23 @@ public class UserServiceImpl implements UserDetailsService, UserService
                 }
 
                 if (user.getTransportation() > 0) {
-                    currentUser.setIncome(user.getIncome());
+                    currentUser.setTransportation(user.getTransportation());
                 }
 
                 if (user.getFood() > 0) {
-                    currentUser.setIncome(user.getIncome());
+                    currentUser.setFood(user.getFood());
                 }
 
                 if (user.getClothing() > 0) {
-                    currentUser.setIncome(user.getIncome());
+                    currentUser.setClothing(user.getClothing());
                 }
 
                 if (user.getBills() > 0) {
-                    currentUser.setIncome(user.getIncome());
+                    currentUser.setBills(user.getBills());
                 }
 
                 if (user.getHousing() > 0) {
-                    currentUser.setIncome(user.getIncome());
+                    currentUser.setHousing(user.getHousing());
                 }
 
                 return userrepos.save(currentUser);
