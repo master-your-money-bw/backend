@@ -1,45 +1,48 @@
-package com.lambdaschool.money;
+package com.lambdaschool.money.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lambdaschool.money.models.Expense;
 import com.lambdaschool.money.models.Role;
 import com.lambdaschool.money.models.User;
 import com.lambdaschool.money.models.UserRoles;
-import com.lambdaschool.money.repository.ExpenseRepository;
-import com.lambdaschool.money.repository.RoleRepository;
-import com.lambdaschool.money.repository.UserRepository;
 import com.lambdaschool.money.services.ExpenseService;
-import com.lambdaschool.money.services.RoleService;
 import com.lambdaschool.money.services.UserService;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 
-@Transactional
-@Component
-public class SeedData implements CommandLineRunner
-{
-    RoleRepository roleRepository;
-    UserRepository userRepository;
-    ExpenseRepository expenseRepository;
+import static org.junit.Assert.*;
 
-    public SeedData(RoleRepository roleRepository, UserRepository userRepository, ExpenseRepository expenseRepository)
-    {
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
-        this.expenseRepository = expenseRepository;
-    }
+public class ExpenseControllerTest {
 
-    @Override
-    public void run(String[] args) throws Exception
-    {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ExpenseService expenseService;
+
+    @MockBean
+    private UserService userService;
+
+    private ArrayList<User> userList;
+
+    @Before
+    public void setUp() throws Exception {
+
+        userList = new ArrayList<>();
+
         Role r1 = new Role("admin");
         Role r2 = new Role("user");
-
-        roleRepository.save(r1);
-        roleRepository.save(r2);
 
         // admin, data, user
         ArrayList<UserRoles> admins = new ArrayList<>();
@@ -70,7 +73,7 @@ public class SeedData implements CommandLineRunner
         u1.getUserExpenses().add(new Expense("exp11", 9, "cat3", u1));
         u1.getUserExpenses().add(new Expense("exp12", 10, "cat3", u1));
 
-        userRepository.save(u1);
+        userList.add(u1);
 
         //users
         ArrayList<UserRoles> users = new ArrayList<>();
@@ -91,7 +94,7 @@ public class SeedData implements CommandLineRunner
         u4.getUserExpenses().add(new Expense("exp2", 12, "cat2", u4));
         u4.getUserExpenses().add(new Expense("exp3", 1, "cat3", u4));
 
-        userRepository.save(u4);
+        userList.add(u4);
 
         users = new ArrayList<>();
         users.add(new UserRoles(new User(), r2));
@@ -112,8 +115,44 @@ public class SeedData implements CommandLineRunner
         u5.getUserExpenses().add(new Expense("exp2", 12, "cat2", u5));
         u5.getUserExpenses().add(new Expense("exp3", 1, "cat3", u5));
 
-        userRepository.save(u5);
+        userList.add(u5);
 
+    }
 
+    @After
+    public void tearDown() throws Exception {
+    }
+
+    @Test
+    public void getMyExpenses() {
+//        String apiUrl = "/courses/courses";
+//
+//        Mockito.when(userService.findAll()).thenReturn(courseList);
+//
+//        RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON);
+//
+//        MvcResult r = mockMvc.perform(rb).andReturn();
+//        String tr = r.getResponse().getContentAsString();
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        String er = mapper.writeValueAsString(courseList);
+//
+//        assertEquals("Rest API Returns List", er, tr);
+    }
+
+    @Test
+    public void getExpenseById() {
+    }
+
+    @Test
+    public void addExpense() {
+    }
+
+    @Test
+    public void updateExpense() {
+    }
+
+    @Test
+    public void deleteExpenseById() {
     }
 }

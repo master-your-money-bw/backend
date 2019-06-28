@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service(value = "expenseService")
-public class ExpenseServiceImpl implements ExpenseService{
+public class ExpenseServiceImpl implements ExpenseService {
     @Autowired
     ExpenseRepository expenseRepository;
 
@@ -37,7 +37,11 @@ public class ExpenseServiceImpl implements ExpenseService{
 
     @Override
     public void delete(long id) {
-        expenseRepository.deleteById(id);
+        if (expenseRepository.findById(id).isPresent()) {
+            expenseRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException(Long.toString(id));
+        }
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ExpenseServiceImpl implements ExpenseService{
 
         System.out.println(newExpense);
 
-        if (expense.getAmount() > 0 ) {
+        if (expense.getAmount() > 0) {
             newExpense.setAmount(expense.getAmount());
         }
         if (expense.getCategory() != null) {

@@ -33,7 +33,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 "/webjars/**",
                 "/createnewuser")
                 .permitAll()
-                .antMatchers("/users/**", "/oauth/revoke-token").authenticated()
+                .antMatchers("/users/**", "/logout", "/expenses/**", "/passthrough/**").authenticated()
                 .antMatchers("/roles/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/actuator/**").hasAnyRole("ADMIN")
                 .and()
