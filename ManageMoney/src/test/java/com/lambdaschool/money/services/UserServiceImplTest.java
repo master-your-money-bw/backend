@@ -91,17 +91,8 @@ public class UserServiceImplTest {
         assertEquals(4, userService.findAll().size());
     }
 
+    //
     @Test
     public void update() {
-//
-//        User updatedUser = new User();
-//
-//        updatedUser.setUsername("admin");
-//        updatedUser.setPassword("password");
-//        updatedUser.setHousing(121212);
-//
-//        userService.update(updatedUser, 3);
-//
-//        assertEquals(121212, userService.findUserById(3).getHousing());
     }
 }

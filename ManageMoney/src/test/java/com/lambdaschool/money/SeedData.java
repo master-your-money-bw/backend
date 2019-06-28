@@ -80,12 +80,12 @@ public class SeedData implements CommandLineRunner
         u4.setEducation("Associate's");
         u4.setLocation("Austin");
 
-        u1.setIncome(80000);
-        u1.setTransportation(1000);
-        u1.setFood(300);
-        u1.setClothing(100);
-        u1.setBills(300);
-        u1.setHousing(800);
+        u4.setIncome(80000);
+        u4.setTransportation(1000);
+        u4.setFood(300);
+        u4.setClothing(100);
+        u4.setBills(300);
+        u4.setHousing(800);
 
         u4.getUserExpenses().add(new Expense("exp1", 123, "cat1", u4));
         u4.getUserExpenses().add(new Expense("exp2", 12, "cat2", u4));
@@ -101,12 +101,12 @@ public class SeedData implements CommandLineRunner
         u5.setEducation("High School");
         u5.setLocation("New York");
 
-        u1.setIncome(155000);
-        u1.setTransportation(50);
-        u1.setFood(1000);
-        u1.setClothing(200);
-        u1.setBills(1100);
-        u1.setHousing(2000);
+        u5.setIncome(155000);
+        u5.setTransportation(50);
+        u5.setFood(1000);
+        u5.setClothing(200);
+        u5.setBills(1100);
+        u5.setHousing(2000);
 
         u5.getUserExpenses().add(new Expense("exp1", 123, "cat1", u5));
         u5.getUserExpenses().add(new Expense("exp2", 12, "cat2", u5));
