@@ -1,247 +1,349 @@
 ## BW Money API
+
 API for BW Money Build Weeks Project
+URL = bw-money-backend.herokuapp.com
+
+Endpoints
+
+- [Create New User](##/createnewuser)
+- [Get All Expenses](##expenses/all)
+- [Delete Expense By Id](##expenses/delete/{id})
+- [Create New Expense](##expenses/new)
+- [Update Expense By Id](##expenses/update/{id})
+- [Get Expense By Id](##expenses/{id})
+- [Logout - no endpoint?](##logout)
+- [Login](##oauth/token)
+- [Get Current User](######Get_Current_User)
+- [Update Current User](###updateUserUsingPUT)
+- [Get a List of Users](##users/users)
+
+Models
+
+- [Expense](###Expense)
+- [User](###User)
+
+Swagger
+
+- [Extra Documentation](##External)
 
 # Endpoints
-## __/createnewuser__
+
+##/createnewuser
+
 ## HTTP Method: POST
 
 ### Expected Response Types
-| Response | Reason |
-| -------- | ------ |
-| 200      | OK     |
+
+| Response | Reason  |
+| -------- | ------- |
+| 201      | created |
 
 ### Parameters
-| Name    | In   | Description | Required? | Type                     |
-| ------- | ---- | ----------- | --------- | ------------------------ |
-| username | body | username     | true      | [User](#user-definition) |
-| password | body | password     | true      | [User](#user-definition) |
 
-### Content Types Produced
-| Produces         |
-| ---------------- |
-| application/json |
+| Name     | In   | Description | Required? | Type                     |
+| -------- | ---- | ----------- | --------- | ------------------------ |
+| username | body | username    | true      | [User](#user-definition) |
+| password | body | password    | true      | [User](#user-definition) |
 
 ### Content Types Consumed
+
 | Consumes         |
 | ---------------- |
 | application/json |
 
+### Example Request
+
+```javascript
+data = {
+  username: "someUserName",
+  password: "s3cr3tP45Sw0Rd"
+};
+axios.post("https://bw-money-backend.herokuapp.com/createnewuser", data);
+```
+
 ---
 
-## __expenses/all__
+##expenses/all
+
 ### HTTP Method: GET
+
 Return all current user's expenses
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
-| Name                     | In    | Description                             | Required? | Type    |
-| ------------------------ | ----- | --------------------------------------- | --------- | ------- |
-| page=0                 | query | Results page you want to retrieve (0..N)  | false     | object  |
-| size=0                 | query | Number of records per page.               | false     | object  |
-| sort=expensename,desc  | query | Sort by parameter and method              | false     | object  |
+
+| Name                  | In    | Description                              | Required? | Type   |
+| --------------------- | ----- | ---------------------------------------- | --------- | ------ |
+| page=0                | query | Results page you want to retrieve (0..N) | false     | object |
+| size=0                | query | Number of records per page.              | false     | object |
+| sort=expensename,desc | query | Sort by parameter and method             | false     | object |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
-## expenses/delete/{id}
+### Example Request
+
+```javascript
+// gets results 11-20
+axios.get("https://bw-money-backend.herokuapp.com/expenses/all?size=10&page=2");
+```
+
+##expenses/delete/{id}
+
 ## HTTP Method: DELETE
+
 Updates expense by ID, returns updated expense
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
-### Content Types Produced
-| Produces |
-| -------- |
-| None     |
+### Example Request
+
+```javascript
+axios.delete("https://bw-money-backend.herokuapp.com/expenses/delete/13");
+```
 
 ---
 
-## __expenses/new__
+##expenses/new
+
 ## HTTP Method: POST
+
 Adds new expense to current user
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
-| Name                     | In    | Description | Required? | Type                           |
-| ------------------------ | ----- | ----------- | --------- | ------------------------------ |
-| expensename              | body  |             | true      | String                         |
-| amount                   | body  |             | false     | Int                            |
-| category                 | body  |             | false     | String                         |
+
+| Name        | In   | Description | Required? | Type   |
+| ----------- | ---- | ----------- | --------- | ------ |
+| expensename | body |             | true      | String |
+| amount      | body |             | false     | Int    |
+| category    | body |             | false     | String |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
 ### Content Types Consumed
+
 | Consumes         |
 | ---------------- |
 | application/json |
 
+### Example Request
+
+```javascript
+data = {
+  expensename: "Lunch meeting",
+  amount: 3,
+  category: "food"
+};
+axios.post("https://bw-money-backend.herokuapp.com/expenses/new", data);
+```
+
 ---
 
-## __expenses/update/{id}__
+##expenses/update/{id}
+
 ## HTTP Method: PUT
+
 Updates expense by ID, returns updated expense
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
-| Name                     | In    | Description | Required? | Type                           |
-| ------------------------ | ----- | ----------- | --------- | ------------------------------ |
-| expensename              | body  |             | true      | String                         |
-| amount                   | body  |             | false     | Int                            |
-| category                 | body  |             | false     | String                         |
+
+| Name        | In   | Description | Required? | Type   |
+| ----------- | ---- | ----------- | --------- | ------ |
+| expensename | body |             | true      | String |
+| amount      | body |             | false     | Int    |
+| category    | body |             | false     | String |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
 ### Content Types Consumed
+
 | Consumes         |
 | ---------------- |
 | application/json |
 
+### Example Request
+
+```javascript
+data = {
+  expensename: "Lunch meeting",
+  amount: 5,
+  category: "food"
+};
+axios.put("https://bw-money-backend.herokuapp.com/expenses/update/13", data);
+```
+
 ---
 
-## __expenses/{id}__
+##expenses/{id}
+
 ## HTTP Method: GET
+
 Return all expense by ID, checks to make sure user has permission
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
-### Content Types Consumed
-| Consumes |
-| -------- |
-| None     |
+### Example Request
+
+```javascript
+axios.get("https://bw-money-backend.herokuapp.com/expenses/13");
+```
 
 ---
 
-## logout
+##logout
+
 ## HTTP Method: GET
+
 logout
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Content Types Produced
+
 | Produces |
 | -------- |
 | None     |
 
 ---
 
-## __oauth/token__
+##oauth/token
+
 ## HTTP Method: GET
+
 getAccessToken
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
-| Name       | In    | Description | Required? | Type   |
-| ---------- | ----- | ----------- | --------- | ------ |
-| username   | query |             | true      | string |
-| password   | query |             | true      | string |
+
+| Name     | In    | Description | Required? | Type   |
+| -------- | ----- | ----------- | --------- | ------ |
+| username | query |             | true      | string |
+| password | query |             | true      | string |
 
 ### Content Types Produced
+
 | Produces |
 | -------- |
 | None     |
 
----
+### Example Request
 
-## __/oauth/token__
-## HTTP Method: POST
-postAccessToken
+```javascript
+data = {
+  expensename: "Lunch meeting",
+  amount: 3,
+  category: "food"
+};
 
-### Expected Response Types
-| Response | Reason |
-| -------- | ------ |
-| 200      | OK     |
-
-### Parameters
-| Name       | In    | Description | Required? | Type   |
-| ---------- | ----- | ----------- | --------- | ------ |
-| name       | query |             | false     | string |
-
-### Content Types Produced
-| Produces |
-| -------- |
-| None     |
-
-### Content Types Consumed
-| Consumes         |
-| ---------------- |
-| application/json |
+config = {
+  // request will return a 401 without this header
+  headers: {
+    Authorization: `bearer ${btoa("lambda-client")}:${btoa("lambda-secret")}`
+  }
+};
+axios.get("https://bw-money-backend.herokuapp.com/oauth/token", data, config);
+```
 
 ---
 
-## __passthrough/data__
+##passthrough/data
+
 ## HTTP Method: POST
+
 Takes JSON, sends it to the Data API, returns the response.
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
+
 | Name    | In   | Description | Required? | Type   |
 | ------- | ---- | ----------- | --------- | ------ |
 | request | body | request     | true      | string |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
 ### Content Types Consumed
+
 | Consumes         |
 | ---------------- |
 | application/json |
 
 ---
 
-## __users/currentuser__
+##users/currentuser
+
 ## HTTP Method: GET
+
+######Get_Current_User
 Return current user
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
+
 | Name                     | In    | Description | Required? | Type    |
 | ------------------------ | ----- | ----------- | --------- | ------- |
 | authenticated            | query |             | false     | boolean |
@@ -249,65 +351,80 @@ Return current user
 | credentials              | query |             | false     | object  |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
 ### Content Types Consumed
+
 | Consumes |
 | -------- |
 | None     |
 
 ---
 
-## __users/currentuser__
+##users/currentuser
+
 ## HTTP Method: PUT
-### updateUserUsingPUT
+
+###updateUserUsingPUT
+
 Updates current user
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Parameters
-| Name                     | In    | Description | Required? | Type                                    |
-| ------------------------ | ----- | ----------- | --------- | --------------------------------------- |
-| authenticated            | query |             | false     | boolean                                 |
-| authorities[0].authority | query |             | false     | string                                  |
-| credentials              | query |             | false     | object                                  |
-| details                  | query | updateUser  | true      | object                                  |
+
+| Name                     | In    | Description | Required? | Type    |
+| ------------------------ | ----- | ----------- | --------- | ------- |
+| authenticated            | query |             | false     | boolean |
+| authorities[0].authority | query |             | false     | string  |
+| credentials              | query |             | false     | object  |
+| details                  | query | updateUser  | true      | object  |
 
 ### Content Types Produced
+
 | Produces |
 | -------- |
 | None     |
 
 ### Content Types Consumed
+
 | Consumes         |
 | ---------------- |
 | application/json |
 
 ---
 
-## __users/users__
+##users/users
+
 ## HTTP Method: GET
+
 Return all users, ADMIN ONLY
 
 ### Expected Response Types
+
 | Response | Reason |
 | -------- | ------ |
 | 200      | OK     |
 
 ### Content Types Produced
+
 | Produces         |
 | ---------------- |
 | application/json |
 
 ---
 
-# __Models__
-### __Expense Definition__
+#Models
+
+###Expense Definition
+
 | Property    | Type    | Format |
 | ----------- | ------- | ------ |
 | amount      | integer | int32  |
@@ -324,7 +441,8 @@ Return all users, ADMIN ONLY
   }
 ```
 
-### __User Definition__
+###User Definition
+
 | Property       | Type    | Format |
 | -------------- | ------- | ------ |
 | transportation | integer | int32  |
@@ -356,5 +474,6 @@ Return all users, ADMIN ONLY
   }
 ```
 
-## External Documentation
+##External Documentation
+
 https://bw-money-backend.herokuapp.com/swagger-ui.html#/
